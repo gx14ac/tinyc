@@ -18,7 +18,7 @@ static void usage(char *prog) {
 
 char *tokStr[] = { "+", "-", "*", "/", "intlit" };
 
-static void scanfile() {
+static void scan_file() {
 	struct token T;
 
 	while (scan(&T)) {
@@ -42,6 +42,6 @@ void main(int argc, char *argv[]) {
 		exit(1);
 	}
 
-	scanfile();
+	scan_file();
 	exit(0);
 }

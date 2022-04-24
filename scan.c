@@ -2,18 +2,7 @@
 #include "data.h"
 #include "decl.h"
 
-//// 文字列をすすめるか戻すかの処理
-//static int next(void);
-//// 文字列を戻す
-//static int putback(int c);
-//// 空白や改行を文字を飛ばす
-//// 空白や改行を飛ばした後に処理する必要がある文字列を返す
-//static int skip(void);
-//// 10進数文字の時にスキャンした文字列を整数で返す
-//static int scanint(int c);
-//// 文字列s中の文字cのポインタを返す。cが見つからなければ-1を返す
-//static int chrpos(char* s, int c);
-
+// 文字列s中の文字cのポインタを返す。cが見つからなければ-1を返す
 static int chrpos(char *s, int c) {
 	char *p;
 
@@ -21,6 +10,7 @@ static int chrpos(char *s, int c) {
 	return (p ? p - s : -1);
 }
 
+// 文字列をすすめるか戻すかの処理
 static int next(void) {
 	int c;
 
@@ -40,10 +30,12 @@ static int next(void) {
 	}
 }
 
-static int putback(int c) {
+// 文字列を戻す
+static int put_back(int c) {
 	Putback = c;
 }
 
+// 空白や改行を飛ばした後に処理する必要がある文字列を返す
 static int skip(void) {
 	int c;
 	
@@ -55,7 +47,8 @@ static int skip(void) {
 	return c;
 }
 
-static int scanint(int c) {
+// 10進数文字の時にスキャンした文字列を整数で返す
+static int scan_int(int c) {
 	int k, val = 0;
 	
 	while ((k = chrpos("0123456789", c)) >= 0) {
@@ -68,7 +61,7 @@ static int scanint(int c) {
 	}
 
 	// 非整数な文の場合はPutbackに格納する
-	putback(c);
+	put_back(c);
 	return val;
 }
 
@@ -95,7 +88,7 @@ int scan(struct token *t) {
 	default:
 		// when interger literal
 		if isdigit(c) {
-			t->intvalue = scanint(c);
+			t->intvalue = scan_int(c);
 			t->token = TOKEN_INTLIT;
 			break;
 		}
