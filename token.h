@@ -8,6 +8,7 @@ enum {
 	TOKEN_PLUS,
 	TOKEN_MINUS,
 	TOKEN_ASTAR,
+	TOKEN_SLASH,
 	TOKEN_INTLIT // interger literal. この場合は構造体tokenのintvalueに値が入る
 };
 

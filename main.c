@@ -16,16 +16,17 @@ static void usage(char *prog) {
 	exit(1);
 }
 
-char* tokStr[] = { "+", "-", "*", "/", "intlit" };
+char *tokStr[] = { "+", "-", "*", "/", "intlit" };
 
 static void scanfile() {
 	struct token T;
 
 	while (scan(&T)) {
-		printf("Token %s\n", tokStr[T.token]);
+		printf("Token %s", tokStr[T.token]);
 		if (T.token == TOKEN_INTLIT) {
-			printf(", value %d\n", T.intvalue);
+			printf(", value %d", T.intvalue);
 		}
+		printf("\n");
 	}
 }
 

@@ -15,7 +15,7 @@
 //static int chrpos(char* s, int c);
 
 static int chrpos(char *s, int c) {
-	char* p;
+	char *p;
 
 	p = strchr(s, c);
 	return (p ? p - s : -1);
@@ -90,7 +90,7 @@ int scan(struct token *t) {
 		t->token = TOKEN_ASTAR;
 		break;
 	case '/':
-		t->token = TOKEN_INTLIT;
+		t->token = TOKEN_SLASH;
 		break;
 	default:
 		// when interger literal
