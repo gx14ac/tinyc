@@ -14,3 +14,5 @@ extern_ int Line;
 extern_ int	Putback;
 // 読み込みファイル
 extern_ FILE *Infile;
+// 入力からスキャンされた最新のトークンを常に持っている
+extern_ struct token Token;
