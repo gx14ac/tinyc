@@ -5,6 +5,7 @@
 
 // Token Types
 enum {
+	TOKEN_EOF,
 	TOKEN_PLUS,
 	TOKEN_MINUS,
 	TOKEN_ASTAR,
