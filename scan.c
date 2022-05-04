@@ -65,6 +65,7 @@ static int scan_int(int c) {
 	return val;
 }
 
+// INFILEの文字列を順番にスキャンする
 int scan(struct token *t) {
 	int c;
 
@@ -72,6 +73,7 @@ int scan(struct token *t) {
 
 	switch (c) {
 	case EOF:
+		t->token = TOKEN_EOF;
 		return 0;
 	case '+':
 		t->token = TOKEN_PLUS;

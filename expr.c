@@ -1,6 +1,7 @@
 #include "token.h"
 #include "data.h"
 #include "decl.h"
+#include "ast.h"
 
 // トークンとASTノードの概念を分けて考えたいため
 // トークンをASTに変換する
@@ -26,7 +27,6 @@ int artihop(int tok) {
 static struct ASTnode *primary(void) {
 	struct ASTnode *n;
 
-
 	// INTLITトークンに対して
 	// それ用のリーフASTノードを作成し、次のトークンをスキャンする
 	switch (Token.token) {
@@ -39,5 +39,43 @@ static struct ASTnode *primary(void) {
 			fprintf(stderr, "syntax error on line %d\n", Line);
 			exit(1);
 	}
+}
 
+// 二項演算子をルートとするASTツリーを返却する
+// 2 * 3 + 4 * 5のような式の場合は以下のようなツリーになるだろう
+/*
+     *
+    / \
+   2   +
+      / \
+     3   *
+        / \
+       4   5
+*/
+struct ASTnode *binexpr(void) {
+	struct ASTnode *n, *left, *right;
+	int nodetype;
+	
+	// 左側の整数リテラルを取得する。
+  	// 同時に次のトークンを取得。
+	left = primary();
+
+	// トークンが残っていない場合、左のノードだけを返す
+	if (Token.token == TOKEN_EOF) {
+		return left;
+	}
+
+	// トークンをノードに変換
+	nodetype = artihop(Token.token);
+
+	// 次のトークンを取得
+	scan(&Token);
+
+	// 右辺の木を再帰的に取得する
+	right = binexpr();
+
+	// 両方のサブツリーを持つツリーを構築する
+	n = new_ast_node(nodetype, left, right, 0);
+
+	return n;
 }

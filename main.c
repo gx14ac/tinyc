@@ -16,21 +16,9 @@ static void usage(char *prog) {
 	exit(1);
 }
 
-char *tokStr[] = { "+", "-", "*", "/", "intlit" };
-
-static void scan_file() {
-	struct token T;
-
-	while (scan(&T)) {
-		printf("Token %s", tokStr[T.token]);
-		if (T.token == TOKEN_INTLIT) {
-			printf(", value %d", T.intvalue);
-		}
-		printf("\n");
-	}
-}
-
 void main(int argc, char *argv[]) {
+	struct ASTnode *n;
+
 	if (argc != 2) {
 		usage(argv[0]);
 	}
@@ -42,6 +30,10 @@ void main(int argc, char *argv[]) {
 		exit(1);
 	}
 
-	scan_file();
+	// 入力から最初のトークンを取得
+	scan(&Token);
+	//  ファイル内の式をパース
+	n = binexpr();
+	printf("%d\n", interpretAST(n));
 	exit(0);
 }
