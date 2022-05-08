@@ -33,7 +33,7 @@ void main(int argc, char *argv[]) {
 	// 入力から最初のトークンを取得
 	scan(&Token);
 	//  ファイル内の式をパース
-	n = binexpr();
+	n = binexpr(0);
 	printf("%d\n", interpretAST(n));
 	exit(0);
 }

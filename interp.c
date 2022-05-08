@@ -3,6 +3,9 @@
 #include "decl.h"
 #include "ast.h"
 
+// List of AST operators
+static char *ASTop[] = { "+", "-", "*", "/" };
+
 // 左側の部分木を解釈し、その値を取得する
 // 次に右側の部分木を解釈し、その値を取得する
 // 木の根元のノードで、2つの部分木の値に対して演算を行いを実行しこの値を返す。以下のようなツリーになる
@@ -26,6 +29,13 @@ int interpretAST(struct ASTnode *n) {
 	if (n->right) {
 		rightVal = interpretAST(n->right);
 	}
+
+  	// Debug: Print what we are about to do
+  	//	if (n->op == AST_INTLIT) {
+  	//	  printf("int %d\n", n->intvalue);
+	//	} else {
+  	//	  printf("%d %s %d\n", leftVal, ASTop[n->op], rightVal);
+	//	}
 
 	switch (n->op) {
 		case AST_ADD: // '+'
