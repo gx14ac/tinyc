@@ -22,6 +22,22 @@ int artihop(int tok) {
 	}
 }
 
+// 各トークンの優先順位
+static int OpPrec[] = { 0, 10, 10, 20, 20, 0 };
+
+// 二項演算子があることを確認し
+// その優先順位を返す。
+static int op_precedence(int tokentype) {
+  int prec = OpPrec[tokentype];
+  if (prec == 0) {
+    fprintf(stderr, "syntax error on line %d, token %d\n", Line, tokentype);
+    exit(1);
+  }
+
+  return prec;
+}
+
+
 // トークンが整数リテラルであることをチェックし
 // そのリテラル値を保持するASTノードを構築する関数
 static struct ASTnode *primary(void) {
@@ -42,40 +58,37 @@ static struct ASTnode *primary(void) {
 }
 
 // 二項演算子をルートとするASTツリーを返却する
-// 2 * 3 + 4 * 5のような式の場合は以下のようなツリーになるだろう
-/*
-     *
-    / \
-   2   +
-      / \
-     3   *
-        / \
-       4   5
-*/
-struct ASTnode *binexpr(void) {
+// ptp引数は直前のトークンの優先順位である。
+struct ASTnode *binexpr(int ptp) {
 	struct ASTnode *n, *left, *right;
-	int nodetype;
+	int tokentype;
 	
 	// 左側の整数リテラルを取得する。
   	// 同時に次のトークンを取得。
 	left = primary();
 
 	// トークンが残っていない場合、左のノードだけを返す
-	if (Token.token == TOKEN_EOF) {
+	tokentype = Token.token;
+	if (tokentype == TOKEN_EOF) {
 		return left;
 	}
 
-	// トークンをノードに変換
-	nodetype = artihop(Token.token);
+	while (op_precedence(tokentype) > ptp) {
+		// 次の整数リテラルを取得
+		scan(&Token);
+    	
+		// トークンの優先順位を指定してbinexpr()を再帰的に呼び出し、サブツリーを構築する。
+		right = binexpr(OpPrec[tokentype]);
+    	
+		// そのサブツリーと結合する。トークンを変換し、ノードを構築
+		left = new_ast_node(artihop(tokentype), left, right, 0);
 
-	// 次のトークンを取得
-	scan(&Token);
+		tokentype = Token.token;
+		if (tokentype == TOKEN_EOF) {
+			return left;
+		}
+	}
 
-	// 右辺の木を再帰的に取得する
-	right = binexpr();
-
-	// 両方のサブツリーを持つツリーを構築する
-	n = new_ast_node(nodetype, left, right, 0);
-
-	return n;
+	// 優先順位が同じか低い場合のツリーを返す
+	return left;
 }

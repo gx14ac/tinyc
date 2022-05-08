@@ -31,11 +31,11 @@ int interpretAST(struct ASTnode *n) {
 	}
 
   	// Debug: Print what we are about to do
-  	if (n->op == AST_INTLIT) {
-  	  printf("int %d\n", n->intvalue);
-	} else {
-  	  printf("%d %s %d\n", leftVal, ASTop[n->op], rightVal);
-	}
+  	//	if (n->op == AST_INTLIT) {
+  	//	  printf("int %d\n", n->intvalue);
+	//	} else {
+  	//	  printf("%d %s %d\n", leftVal, ASTop[n->op], rightVal);
+	//	}
 
 	switch (n->op) {
 		case AST_ADD: // '+'
