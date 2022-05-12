@@ -4,7 +4,7 @@
 #include "ast.h"
 
 // ASTからAssemblyを再帰的に生成する
-static int genAST(struct ASTnode *n) {
+int genAST(struct ASTnode *n) {
 	int leftreg, rightreg;
 
 	// registerのIDを取得
