@@ -5,6 +5,6 @@ clean:
 	rm -f tinyc *.o
 
 test: tinyc
-	./tiny input01
+	./tinyc input01
 	cc -o out out.s
 	./out
