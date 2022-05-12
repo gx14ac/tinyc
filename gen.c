@@ -29,12 +29,7 @@ static int genAST(struct ASTnode *n) {
 	}
 }
 
-void generateCode(struct ASTnode *n) {
-	int reg;
-
-	cgPreamble();
-	reg = genAST(n);
-	// 結果を持つレジスタをint型として表示
-	cgPrintInt(reg);
-	cgPostamble();
-}
+void genPreamble()        { cgPreamble(); }
+void genPostamble()       { cgPostamble(); }
+void genFreeregs()        { freeall_registers(); }
+void genPrintInt(int reg) { cgPrintInt(reg); }

@@ -10,7 +10,9 @@ enum {
 	TOKEN_MINUS,
 	TOKEN_ASTAR,
 	TOKEN_SLASH,
-	TOKEN_INTLIT // interger literal. この場合は構造体tokenのintvalueに値が入る
+	TOKEN_INTLIT, // interger literal. この場合は構造体tokenのintvalueに値が入る
+	TOKEN_PRINT,
+	TOKEN_SEMI
 };
 
 // Token structure

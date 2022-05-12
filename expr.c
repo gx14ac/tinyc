@@ -69,7 +69,7 @@ struct ASTnode *binexpr(int ptp) {
 
 	// トークンが残っていない場合、左のノードだけを返す
 	tokentype = Token.token;
-	if (tokentype == TOKEN_EOF) {
+	if (tokentype == TOKEN_SEMI) {
 		return left;
 	}
 
@@ -84,7 +84,7 @@ struct ASTnode *binexpr(int ptp) {
 		left = new_ast_node(artihop(tokentype), left, right, 0);
 
 		tokentype = Token.token;
-		if (tokentype == TOKEN_EOF) {
+		if (tokentype == TOKEN_SEMI) {
 			return left;
 		}
 	}

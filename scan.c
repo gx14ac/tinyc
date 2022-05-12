@@ -68,6 +68,7 @@ static int scan_int(int c) {
 // INFILEの文字列を順番にスキャンする
 int scan(struct token *t) {
 	int c;
+	int tokentype;
 
 	c = skip();
 
@@ -87,17 +88,66 @@ int scan(struct token *t) {
 	case '/':
 		t->token = TOKEN_SLASH;
 		break;
+	case ';':
+		t->token = TOKEN_SEMI;
+		break;
 	default:
 		// when interger literal
 		if isdigit(c) {
 			t->intvalue = scan_int(c);
 			t->token = TOKEN_INTLIT;
 			break;
+		} else if (isalpha(c) || '_' == c) {
+			// キーワードや識別子を読み込む
+			scanident(c, Text, TEXTLEN);
+
+			// 登録されているキーワードなら返す
+			if (tokentype = keyword(Text)) {
+				t->token = tokentype;
+				break;
+			}
+			// 登録されていない場合はエラーを返す
+			printf("Unrecognised symbol %s on line %d\n", Text, Line);
+			exit(1);
 		}
-		
+		// どのトークンにも当てはまらない場合
 		printf("Unrecognised character %c on line %d\n", c, Line);
 		exit(1);
 	}
 
 	return 1;
+}
+
+// 英数字をバッファに読み込んで、英数字以外の文字にぶつかるまで読み込む
+static int scanident(int c, char *buf, int lim) {
+	int i = 0;
+
+	// 数字、アルファベット、アンダースコアは許可する
+	while (isalpha(c) || isdigit(c) || '_' == c) {
+		// 識別子の長さ制限
+		if (lim - 1 == i) {
+			printf("identfier too long on line %d\n", Line);
+			exit(1);
+		} else if (i < lim - 1) {
+			buf[i++] = c;
+		}
+		c = next();
+	}
+
+	// 有効でない文字に当たったので元に戻す
+  	// buf[]をNUL終端し、長さを返す. これで有効な文字列と有効でない文字列を分けることができる
+	put_back(c);
+	buf[i] = '\0';
+	return i;
+}
+
+static int keyword(char *s) {
+	switch (*s) {
+		case 'p':
+			if (!strcmp(s, "print")) {
+				return TOKEN_PRINT;
+				break;
+			}
+	}
+	return 0;
 }
