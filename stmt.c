@@ -1,6 +1,7 @@
+#include "token.h"
 #include "data.h"
 #include "decl.h"
-#include "token.h"
+#include "ast.h"
 
 // すべての主要な文のパースコードを保持
 // BNF文法を解析する再帰的な関数
