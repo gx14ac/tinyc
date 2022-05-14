@@ -1,4 +1,5 @@
 #include "token.h"
+#include "symbol.h"
 #include "data.h"
 #include "decl.h"
 
@@ -77,6 +78,11 @@ static int keyword(char *s) {
 				return TOKEN_PRINT;
 				break;
 			}
+		case 'i':
+			if (!strcmp(s, "int")) {
+				return TOKEN_INT;
+				break;
+			}
 	}
 	return 0;
 }
@@ -125,9 +131,12 @@ int scan(struct token *t) {
 	case ';':
 		t->token = TOKEN_SEMI;
 		break;
+	case '=':
+		t->token = TOKEN_EQUALS;
+		break;
 	default:
 		// when interger literal
-		if isdigit(c) {
+		if (isdigit(c)) {
 			t->intvalue = scan_int(c);
 			t->token = TOKEN_INTLIT;
 			break;
@@ -140,13 +149,12 @@ int scan(struct token *t) {
 				t->token = tokentype;
 				break;
 			}
-			// 登録されていない場合はエラーを返す
-			printf("Unrecognised symbol %s on line %d\n", Text, Line);
-			exit(1);
+			// Textがkeywordで無い場合は識別子として認識して返す
+			t->token = TOKEN_IDENT;
+			break;
 		}
 		// どのトークンにも当てはまらない場合
-		printf("Unrecognised character %c on line %d\n", c, Line);
-		exit(1);
+		fatalc("Unrecognised character", c);
 	}
 
 	return 1;

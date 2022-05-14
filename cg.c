@@ -1,4 +1,5 @@
 #include "token.h"
+#include "symbol.h"
 #include "data.h"
 #include "decl.h"
 #include "ast.h"
@@ -86,13 +87,33 @@ void cgPrintInt(int r) {
 
 // 整数リテラル値をレジスタにロード
 // レジスタの番号を返す
-int cgload(int value) {
-	// 空いているレジスターを取得
+int cgloadInt(int value) {
+	// レジスタの確保
 	int r = alloc_register();
 
 	fprintf(Outfile, "\tmovq\t$%d, %s\n", value, reglist[r]);
-	
 	return r;
+}
+
+// グローバル変数から値を取得する
+int cgloadGlob(char *identifier) {
+	// レジスタの確保
+	int r = alloc_register();
+
+	// シンボルテーブルの値を初期化するためのコードを出力
+	fprintf(Outfile, "\tmovq\t%s(\%%rip), %s\n", identifier, reglist[r]);
+	return r;
+}
+
+// シンボルテーブルの自動生成
+void cgGlobSym(char *sym) {
+	fprintf(Outfile, "\t.comm\t%s,8,8\n", sym);
+}
+
+// レジスタの値を変数に格納する
+int cgstorGlob(int r, char *identifier) {
+  fprintf(Outfile, "\tmovq\t%s, %s(\%%rip)\n", reglist[r], identifier);
+  return r;
 }
 
 // 2つのレジスタを足し合わせて結果を格納したレジスタの番号を返す

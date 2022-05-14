@@ -1,4 +1,5 @@
 #include "token.h"
+#include "symbol.h"
 #include "data.h"
 #include "decl.h"
 #include "ast.h"
@@ -42,19 +43,29 @@ static int op_precedence(int tokentype) {
 // そのリテラル値を保持するASTノードを構築する関数
 static struct ASTnode *primary(void) {
 	struct ASTnode *n;
+	int id;
 
-	// INTLITトークンに対して
-	// それ用のリーフASTノードを作成し、次のトークンをスキャンする
 	switch (Token.token) {
+		// INTLITトークンに対して、そのリーフASTノードを作成
 		case TOKEN_INTLIT:
-			// 葉のASTノード（子を持たないノード）を作る関数
+			// 葉のASTノード（子を持たないノード）を作る
 			n = create_ast_leaf(AST_INTLIT, Token.intvalue);
-			scan(&Token);
-			return n;
+		case TOKEN_IDENT:
+			// 識別子が存在するかどうかを確認する
+			id = findGlob(Text);
+			if (id == -1) {
+				fatals("unknown variable", Text);
+			}
+			// 葉のASTノード（子を持たないノード）を作る
+			n = create_ast_leaf(AST_IDENT, id);
+			break;
 		default:
-			fprintf(stderr, "syntax error on line %d\n", Line);
-			exit(1);
+			fatald("Syntax error, token", Token.token);
 	}
+
+	// 次のトークンをスキャンしてリーフノードを返す
+	scan(&Token);
+	return n;
 }
 
 // 二項演算子をルートとするASTツリーを返却する

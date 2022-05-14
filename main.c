@@ -1,4 +1,5 @@
 #include "token.h"
+#include "symbol.h"
 #define extern_
 #include "data.h"
 #undef extern_
@@ -37,10 +38,10 @@ void main(int argc, char *argv[]) {
   	  exit(1);
   	}
   	
-  	scan(&Token);			// Get the first token from the input
-	genPreamble();
-	statements();
-	genPostamble();
-  	fclose(Outfile);
+  	scan(&Token); // Get the first token from the input
+	genPreamble(); // Output the preamble
+	statements(); // Parse the statements in the input
+	genPostamble(); // Output the postamble
+  	fclose(Outfile); // Close the output file and exit
   	exit(0);
 }

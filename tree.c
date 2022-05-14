@@ -1,4 +1,5 @@
 #include "token.h"
+#include "symbol.h"
 #include "data.h"
 #include "ast.h"
 #include "decl.h"
@@ -19,7 +20,7 @@ struct ASTnode *new_ast_node(int op, struct ASTnode *left,
 	node->op = op;
 	node->left = left;
 	node->right = right;
-	node->intvalue = intvalue;
+	node->v.intvalue = intvalue;
 
 	return node;
 }
