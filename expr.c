@@ -27,8 +27,8 @@ static int op_precedence(int tokentype) {
 // トークンとASTノードの概念を分けて考えたいため
 // トークンをASTに変換する
 int artihop(int tok) {
-	if (tokentype > T_EOF && tokentype < TOKEN_INTLIT) {
-		return tokentype;
+	if (tok > T_EOF && tok < TOKEN_INTLIT) {
+		return tok;
 	}
 	fatald("syntax error, token", tokentype);
 }
