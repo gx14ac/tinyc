@@ -32,7 +32,7 @@ static int next(void) {
 }
 
 // 文字列を戻す
-static int put_back(int c) {
+static int putback(int c) {
 	Putback = c;
 }
 
@@ -66,7 +66,7 @@ static int scanident(int c, char *buf, int lim) {
 
 	// 有効でない文字に当たったので元に戻す
   	// buf[]をNUL終端し、長さを返す. これで有効な文字列と有効でない文字列を分けることができる
-	put_back(c);
+	putback(c);
 	buf[i] = '\0';
 	return i;
 }
@@ -101,7 +101,7 @@ static int scan_int(int c) {
 	}
 
 	// 非整数な文の場合はPutbackに格納する
-	put_back(c);
+	putback(c);
 	return val;
 }
 
@@ -132,7 +132,35 @@ int scan(struct token *t) {
 		t->token = TOKEN_SEMI;
 		break;
 	case '=':
-		t->token = TOKEN_EQUALS;
+		if ((c = next()) == '=') {
+			t->token = TOKEN_EQUALS;
+		} else {
+			putback(c);
+			t->token = TOKEN_ASSIGN;
+		}
+		break;
+	case '!':
+		if ((c = next()) == '=') {
+			t->token = TOKEN_NE;
+		} else {
+			fatalc("Unrecognised character", c);
+		}
+		break;
+	case '<':
+		if ((c = next()) == '=') {
+			t->token = TOKEN_LE;
+		} else {
+			putback(c);
+			t->token = TOKEN_LT;
+		}
+		break;
+	case '>':
+		if ((c = next()) == '=') {
+			t->token = TOKEN_GE;
+		} else {
+			putback(c);
+			t->token = TOKEN_GT;
+		}
 		break;
 	default:
 		// when interger literal
@@ -145,7 +173,7 @@ int scan(struct token *t) {
 			scanident(c, Text, TEXTLEN);
 
 			// 登録されているキーワードなら返す
-			if (tokentype = keyword(Text)) {
+			if ((tokentype = keyword(Text))) {
 				t->token = tokentype;
 				break;
 			}

@@ -37,7 +37,7 @@ void assignment_statement(void) {
     right = create_ast_leaf(AST_LVIDENT, id);
 
     // = 符号があることを確認する
-    match(TOKEN_EQUALS, "=");
+    match(TOKEN_ASSIGN, "=");
 
     // 式をパースして、ツリーを生成
     left = binexpr(0);

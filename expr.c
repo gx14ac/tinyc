@@ -4,27 +4,13 @@
 #include "decl.h"
 #include "ast.h"
 
-// トークンとASTノードの概念を分けて考えたいため
-// トークンをASTに変換する
-int artihop(int tok) {
-	switch (tok) {
-		case TOKEN_PLUS:
-			return AST_ADD;
-		case TOKEN_MINUS:
-			return AST_SUBSTRACT;
-		case TOKEN_ASTAR:
-			return AST_MULTIPLY;
-		case TOKEN_SLASH:
-			return AST_DIVIDE;
-		default:
-			// 対応していないトークン
-			fprintf(stderr, "unknown token in artihop() on line %d\n", Line);
-			exit(1);
-	}
-}
-
 // 各トークンの優先順位
-static int OpPrec[] = { 0, 10, 10, 20, 20, 0 };
+static int OpPrec[] = {
+	0, 10, 10, // TOKEN_EOF, TOKEN_PLUS, TOKEN_MINUS
+	20, 20, // TOKEN_STAR, TOKEN_SLASH
+	30, 30, // TOKEN_EQUALS, TOKEN_NE
+	40, 40, 40, 40 // TOKEN_LT, TOKEN_GT, TOKEN_LE, TOKEN_GE
+};
 
 // 二項演算子があることを確認し
 // その優先順位を返す。
@@ -38,6 +24,14 @@ static int op_precedence(int tokentype) {
   return prec;
 }
 
+// トークンとASTノードの概念を分けて考えたいため
+// トークンをASTに変換する
+int artihop(int tok) {
+	if (tok > TOKEN_EOF && tok < TOKEN_INTLIT) {
+		return tok;
+	}
+	fatald("syntax error, token", tok);
+}
 
 // トークンが整数リテラルであることをチェックし
 // そのリテラル値を保持するASTノードを構築する関数

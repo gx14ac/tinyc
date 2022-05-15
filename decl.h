@@ -46,6 +46,12 @@ int cgadd(int r1, int r2);
 int cgmul(int r1, int r2);
 int cgsub(int r1, int r2);
 int cgdiv(int r1, int r2);
+int cgequal(int r1, int r2);
+int cgnotequal(int r1, int r2);
+int cglessthan(int r1, int r2);
+int cggreaterthan(int r1, int r2);
+int cglessequal(int r1, int r2);
+int cggreaterequal(int r1, int r2);
 
 // sym.c
 int findGlob(char *s);

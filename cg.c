@@ -12,6 +12,8 @@ static int freereg[4];
 // 汎用レジスタであるr0、r1、r2、r3に対して動作
 // CPUアーキテクチャから独立している
 static char *reglist[4] = { "%r8", "%r9", "%r10", "%r11" };
+// x86-64アーキテクチャではsetX命令が8ビットレジスタ名に対してのみ動作するため、breglist[]配列が必要
+static char *breglist[4] = { "%r8b", "%r9b", "%r10b", "%r11b" };
 
 // 全てのレジスタを使用可能にする
 void freeall_registers(void) {
@@ -27,16 +29,14 @@ static int alloc_register(void) {
 			return i;
 		}
 	}
-	fprintf(stderr, "out of registers!\n");
-	exit(1);
+	fatal("out of registers");
 }
 
 // 使用可能なレジスタのリストにレジスタを戻す
 static void free_register(int reg) {
 	// 割り当て済みでないか確認
 	if (freereg[reg] != 0) {
-		fprintf(stderr, "error trying to free register %d\n", reg);
-		exit(1);
+		fatald("error trying to free register", reg);
 	}
 	freereg[reg] = 1;
 }
@@ -148,4 +148,36 @@ int cgdiv(int r1, int r2) {
   	fprintf(Outfile, "\tmovq\t%%rax,%s\n", reglist[r1]);
   	free_register(r2);
   	return r1;
+}
+
+static int cgcompare(int r1, int r2, char *how) {
+	fprintf(Outfile, "\tcmpq\t%s, %s\n", reglist[r2], reglist[r1]);
+	fprintf(Outfile, "\t%s\t%s\n", how, breglist[r2]);
+	fprintf(Outfile, "\tandq\t$255,%s\n", reglist[r2]);
+  	free_register(r1);
+  	return r2;
+}
+
+int cgequal(int r1, int r2) {
+	return cgcompare(r1, r2, "sete");
+}
+
+int cgnotequal(int r1, int r2) {
+	return cgcompare(r1, r2, "setne");
+}
+
+int cglessthan(int r1, int r2) {
+	return cgcompare(r1, r2, "setl");
+}
+
+int cggreaterthan(int r1, int r2) {
+	return cgcompare(r1, r2, "setg");
+}
+
+int cglessequal(int r1, int r2) {
+	return cgcompare(r1, r2, "setle");
+}
+
+int cggreaterequal(int r1, int r2) {
+	return cgcompare(r1, r2, "setge");
 }
