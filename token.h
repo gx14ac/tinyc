@@ -16,7 +16,7 @@ enum {
 	TOKEN_NE, // !=
 
 	TOKEN_LT, TOKEN_GT, //  <, >
-	TTOKEN_LE, TOKEN_GE, //  <=, >=
+	TOKEN_LE, TOKEN_GE, //  <=, >=
 
 	TOKEN_INTLIT, // interger literal. この場合は構造体tokenのintvalueに値が入る
 	TOKEN_SEMI, // ;
