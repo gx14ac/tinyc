@@ -4,6 +4,26 @@
 #include "decl.h"
 #include "ast.h"
 
+// 各トークンの優先順位
+static int OpPrec[] = {
+	0, 10, 10, // TOKEN_EOF, TOKEN_PLUS, TOKEN_MINUS
+	20, 20, // TOKEN_STAR, TOKEN_SLASH
+	30, 30, // TOKEN_EQUALS, TOKEN_NE
+	40, 40, 40, 40 // TOKEN_LT, TOKEN_GT, TOKEN_LE, TOKEN_GE
+};
+
+// 二項演算子があることを確認し
+// その優先順位を返す。
+static int op_precedence(int tokentype) {
+  int prec = OpPrec[tokentype];
+  if (prec == 0) {
+    fprintf(stderr, "syntax error on line %d, token %d\n", Line, tokentype);
+    exit(1);
+  }
+
+  return prec;
+}
+
 // トークンとASTノードの概念を分けて考えたいため
 // トークンをASTに変換する
 int artihop(int tok) {
@@ -22,22 +42,6 @@ int artihop(int tok) {
 			exit(1);
 	}
 }
-
-// 各トークンの優先順位
-static int OpPrec[] = { 0, 10, 10, 20, 20, 0 };
-
-// 二項演算子があることを確認し
-// その優先順位を返す。
-static int op_precedence(int tokentype) {
-  int prec = OpPrec[tokentype];
-  if (prec == 0) {
-    fprintf(stderr, "syntax error on line %d, token %d\n", Line, tokentype);
-    exit(1);
-  }
-
-  return prec;
-}
-
 
 // トークンが整数リテラルであることをチェックし
 // そのリテラル値を保持するASTノードを構築する関数

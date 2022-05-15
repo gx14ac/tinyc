@@ -1,13 +1,17 @@
 // AST node types
 enum {
-	AST_ADD, // '+'
+	AST_ADD = 1, // '+'
 	AST_SUBSTRACT, // '-'
 	AST_MULTIPLY, // '*'
 	AST_DIVIDE, // '/'
+
+	// ==, !=, <, >, <=, >=
+	AST_EQ, AST_NE, AST_LT, AST_GT, AST_LE, AST_GE,
+
 	AST_INTLIT, // interger literal
+
 	AST_IDENT,
-	AST_LVIDENT,
-	AST_ASSIGN
+	AST_LVIDENT, AST_ASSIGN
 };
 
 // Abstract Syntax Tree structure

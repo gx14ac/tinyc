@@ -34,6 +34,7 @@ static int next(void) {
 // 文字列を戻す
 static int putback(int c) {
 	Putback = c;
+	return 0;
 }
 
 // 空白や改行を飛ばした後に処理する必要がある文字列を返す
@@ -132,7 +133,7 @@ int scan(struct token *t) {
 		t->token = TOKEN_SEMI;
 		break;
 	case '=':
-		if (c = next() == '=') {
+		if ((c = next()) == '=') {
 			t->token = TOKEN_EQUALS;
 		} else {
 			putback(c);
@@ -140,14 +141,14 @@ int scan(struct token *t) {
 		}
 		break;
 	case '!':
-		if (c = next() == '=') {
+		if ((c = next()) == '=') {
 			t->token = TOKEN_NE;
 		} else {
 			fatalc("Unrecognised character", c);
 		}
 		break;
 	case '<':
-		if (c = next() == '=') {
+		if ((c = next()) == '=') {
 			t->token = TOKEN_LE;
 		} else {
 			putback(c);
@@ -155,7 +156,7 @@ int scan(struct token *t) {
 		}
 		break;
 	case '>':
-		if (c = next() == '=') {
+		if ((c = next()) == '=') {
 			t->token = TOKEN_GE;
 		} else {
 			putback(c);
@@ -173,7 +174,7 @@ int scan(struct token *t) {
 			scanident(c, Text, TEXTLEN);
 
 			// 登録されているキーワードなら返す
-			if (tokentype = keyword(Text)) {
+			if ((tokentype = keyword(Text))) {
 				t->token = tokentype;
 				break;
 			}

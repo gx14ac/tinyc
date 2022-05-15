@@ -33,6 +33,18 @@ int genAST(struct ASTnode *n, int reg) {
 		case AST_ASSIGN:
 			// 作業はすでに終了しているので、結果を返す
 			return rightreg;
+		case AST_EQ:
+			return cgequal(leftreg, rightreg);
+		case AST_NE:
+			return cgnotequal(leftreg, rightreg);
+		case AST_LT:
+			return cglessthan(leftreg, rightreg);
+		case AST_GT:
+			return cggreaterthan(leftreg, rightreg);
+		case AST_LE:
+			return cglessequal(leftreg, rightreg);
+		case AST_GE:
+			return cggreaterequal(leftreg, rightreg);
 		default:
 			fprintf(stderr, "unknown ast operator %d\n", n->op);
 			exit(1);
