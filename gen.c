@@ -22,17 +22,6 @@ int genAST(struct ASTnode *n, int reg) {
 			return cgmul(leftreg, rightreg);
 		case AST_DIVIDE: // '/'
 			return cgdiv(leftreg, rightreg);
-		case AST_INTLIT: // interger literal
-			// レジスタに値をロードし、値をもつレジスタのIDを返す
-			return cgloadInt(n->v.intvalue);
-		case AST_IDENT:
-			return cgloadGlob(Gsym[n->v.id].name);
-		case AST_LVIDENT:
-			// Gsym[n]に名前がある変数にレジスタを格納する。
-			return cgstorGlob(reg, Gsym[n->v.id].name);
-		case AST_ASSIGN:
-			// 作業はすでに終了しているので、結果を返す
-			return rightreg;
 		case AST_EQ:
 			return cgequal(leftreg, rightreg);
 		case AST_NE:
@@ -45,6 +34,17 @@ int genAST(struct ASTnode *n, int reg) {
 			return cglessequal(leftreg, rightreg);
 		case AST_GE:
 			return cggreaterequal(leftreg, rightreg);
+		case AST_INTLIT: // interger literal
+			// レジスタに値をロードし、値をもつレジスタのIDを返す
+			return cgloadInt(n->v.intvalue);
+		case AST_IDENT:
+			return cgloadGlob(Gsym[n->v.id].name);
+		case AST_LVIDENT:
+			// Gsym[n]に名前がある変数にレジスタを格納する。
+			return cgstorGlob(reg, Gsym[n->v.id].name);
+		case AST_ASSIGN:
+			// 作業はすでに終了しているので、結果を返す
+			return rightreg;
 		default:
 			fprintf(stderr, "unknown ast operator %d\n", n->op);
 			exit(1);
