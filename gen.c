@@ -39,8 +39,22 @@ int genAST(struct ASTnode *n, int reg) {
 	}
 }
 
-void genPreamble()        { cgPreamble(); }
-void genPostamble()       { cgPostamble(); }
-void genFreeregs()        { freeall_registers(); }
-void genPrintInt(int reg) { cgPrintInt(reg); }
-void genGlobSym(char *s)  { cgGlobSym(s); }
+void genPreamble() {
+	cgPreamble();
+}
+
+void genPostamble() {
+	cgPostamble();
+}
+
+void genFreeregs() {
+	freeall_registers();
+}
+
+void genPrintInt(int reg) {
+	cgPrintInt(reg);
+}
+
+void genGlobSym(char *s) {
+	cgGlobSym(s);
+}

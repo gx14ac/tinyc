@@ -50,6 +50,7 @@ static struct ASTnode *primary(void) {
 		case TOKEN_INTLIT:
 			// 葉のASTノード（子を持たないノード）を作る
 			n = create_ast_leaf(AST_INTLIT, Token.intvalue);
+			break;
 		case TOKEN_IDENT:
 			// 識別子が存在するかどうかを確認する
 			id = findGlob(Text);
@@ -84,6 +85,7 @@ struct ASTnode *binexpr(int ptp) {
 		return left;
 	}
 
+	// このトークンの優先順位が前のトークンの優先順位よりも高い場合
 	while (op_precedence(tokentype) > ptp) {
 		// 次の整数リテラルを取得
 		scan(&Token);

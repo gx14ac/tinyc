@@ -43,5 +43,6 @@ int addGlob(char *name) {
     // そうでなければ新しいシンボルテーブルを作る
     y = newGlob();
     Gsym[y].name = strdup(name);
+
     return y;
 }
