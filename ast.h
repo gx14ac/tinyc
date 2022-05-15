@@ -4,7 +4,10 @@ enum {
 	AST_SUBSTRACT, // '-'
 	AST_MULTIPLY, // '*'
 	AST_DIVIDE, // '/'
-	AST_INTLIT // interger literal
+	AST_INTLIT, // interger literal
+	AST_IDENT,
+	AST_LVIDENT,
+	AST_ASSIGN
 };
 
 // Abstract Syntax Tree structure
@@ -15,5 +18,8 @@ struct ASTnode {
 	int op; // ツリーに対して行う操作
 	struct ASTnode *left;
 	struct ASTnode *right;
-	int intvalue; // AST_INTLITの場合の整数値
+	union {
+		int intvalue; // AST_INTLITの場合の整数値
+		int id; // AST_IDNETの場合のシンボルテーブルの位置
+	} v;
 };
