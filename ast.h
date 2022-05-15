@@ -1,6 +1,6 @@
 // AST node types
 enum {
-	AST_ADD = 1, // '+'
+	AST_ADD=1, // '+'
 	AST_SUBSTRACT, // '-'
 	AST_MULTIPLY, // '*'
 	AST_DIVIDE, // '/'
@@ -10,8 +10,7 @@ enum {
 
 	AST_INTLIT, // interger literal
 
-	AST_IDENT,
-	AST_LVIDENT, AST_ASSIGN
+	AST_IDENT, AST_LVIDENT, AST_ASSIGN
 };
 
 // Abstract Syntax Tree structure
