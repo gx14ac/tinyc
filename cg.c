@@ -27,16 +27,14 @@ static int alloc_register(void) {
 			return i;
 		}
 	}
-	fprintf(stderr, "out of registers!\n");
-	exit(1);
+	fatal("out of registers");
 }
 
 // 使用可能なレジスタのリストにレジスタを戻す
 static void free_register(int reg) {
 	// 割り当て済みでないか確認
 	if (freereg[reg] != 0) {
-		fprintf(stderr, "error trying to free register %d\n", reg);
-		exit(1);
+		fatald("error trying to free register", reg);
 	}
 	freereg[reg] = 1;
 }

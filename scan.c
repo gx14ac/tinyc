@@ -34,7 +34,6 @@ static int next(void) {
 // 文字列を戻す
 static int putback(int c) {
 	Putback = c;
-	return 0;
 }
 
 // 空白や改行を飛ばした後に処理する必要がある文字列を返す

@@ -46,8 +46,7 @@ int genAST(struct ASTnode *n, int reg) {
 			// 作業はすでに終了しているので、結果を返す
 			return rightreg;
 		default:
-			fprintf(stderr, "unknown ast operator %d\n", n->op);
-			exit(1);
+			fatald("unknown AST operator", n->op);
 	}
 }
 
