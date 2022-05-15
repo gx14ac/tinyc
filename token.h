@@ -13,9 +13,10 @@ enum {
 	TOKEN_ASTAR, TOKEN_SLASH,
 
 	TOKEN_EQUALS, // ==
-	TOKEN_LT, TOKEN_LE, //  <, <=
-	TOKEN_GT, TOKEN_GE, //  >, >=
 	TOKEN_NE, // !=
+
+	TOKEN_LT, TOKEN_GT, //  <, >
+	TTOKEN_LE, TOKEN_GE, //  <=, >=
 
 	TOKEN_INTLIT, // interger literal. この場合は構造体tokenのintvalueに値が入る
 	TOKEN_SEMI, // ;
