@@ -27,20 +27,10 @@ static int op_precedence(int tokentype) {
 // トークンとASTノードの概念を分けて考えたいため
 // トークンをASTに変換する
 int artihop(int tok) {
-	switch (tok) {
-		case TOKEN_PLUS:
-			return AST_ADD;
-		case TOKEN_MINUS:
-			return AST_SUBSTRACT;
-		case TOKEN_ASTAR:
-			return AST_MULTIPLY;
-		case TOKEN_SLASH:
-			return AST_DIVIDE;
-		default:
-			// 対応していないトークン
-			fprintf(stderr, "unknown token in artihop() on line %d\n", Line);
-			exit(1);
+	if (tokentype > T_EOF && tokentype < T_INTLIT) {
+		return tokentype;
 	}
+	fatald("syntax error, token", tokentype);
 }
 
 // トークンが整数リテラルであることをチェックし
