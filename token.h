@@ -9,16 +9,20 @@
 // Token Types
 enum {
 	TOKEN_EOF,
-	TOKEN_PLUS,
-	TOKEN_MINUS,
-	TOKEN_ASTAR,
-	TOKEN_SLASH,
+	TOKEN_PLUS, TOKEN_MINUS,
+	TOKEN_ASTAR, TOKEN_SLASH,
 	TOKEN_INTLIT, // interger literal. この場合は構造体tokenのintvalueに値が入る
+	TOKEN_SEMI, // ;
+	TOKEN_EQUALS, // ==
+	TOKEN_IDENT, // hoge
+	TOKEN_LT, TOKEN_LE, //  <, <=
+	TOKEN_GT, TOKEN_GE, //  >, >=
+	TOKEN_NE, // !=
+	TOKEN_ASSIGN, // =
+
+	// keywords
 	TOKEN_PRINT,
-	TOKEN_SEMI,
-	TOKEN_INT,
-	TOKEN_EQUALS,
-	TOKEN_IDENT
+	TOKEN_INT
 };
 
 // Token structure
