@@ -12,6 +12,8 @@ static int freereg[4];
 // 汎用レジスタであるr0、r1、r2、r3に対して動作
 // CPUアーキテクチャから独立している
 static char *reglist[4] = { "%r8", "%r9", "%r10", "%r11" };
+// x86-64アーキテクチャではsetX命令が8ビットレジスタ名に対してのみ動作するため、breglist[]配列が必要
+static char *breglist[4] = { "%r8b", "%r9b", "%r10b", "%r11b" };
 
 // 全てのレジスタを使用可能にする
 void freeall_registers(void) {
@@ -149,9 +151,9 @@ int cgdiv(int r1, int r2) {
 }
 
 static int cgcompare(int r1, int r2, char *how) {
-  	fprintf(Outfile, "\tcmpq\t%s, %s\n", reglist[r2], reglist[r1]);
-  	fprintf(Outfile, "\t%s\t%s\n", how, reglist[r2]);
-  	fprintf(Outfile, "\tandq\t$255,%s\n", reglist[r2]);
+	fprintf(Outfile, "\tcmpq\t%s, %s\n", reglist[r2], reglist[r1]);
+	fprintf(Outfile, "\t%s\t%s\n", how, breglist[r2]);
+	fprintf(Outfile, "\tandq\t$255,%s\n", reglist[r2]);
   	free_register(r1);
   	return r2;
 }
