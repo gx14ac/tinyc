@@ -23,9 +23,14 @@ enum {
 	TOKEN_ASSIGN, // =
 	TOKEN_IDENT, // hoge
 
+	TOKEN_L_BRACKET, TOKEN_R_BRACET, // {, }
+	TOKEN_L_PARENT, TOKEN_R_PARENT, // (, )
+
 	// keywords
 	TOKEN_PRINT,
 	TOKEN_INT
+	TOKEN_IF,
+	TOKEN_ELSE,
 };
 
 // Token structure
